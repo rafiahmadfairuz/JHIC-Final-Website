@@ -15,122 +15,127 @@
 <body>
     <!-- Navbar -->
     <div class="navbar-wrapper" id="navbar">
-        <header class="navbar">
+        <header class="navbar"
+            style="display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-radius:20px;background:white;box-shadow:0 4px 16px rgba(0,0,0,0.08);max-width:1200px;margin:auto;flex-wrap:wrap;position:relative;z-index:10;">
+
             <!-- Logo -->
-            <div class="logo">
-                <img src="{{ asset('assets-landing-page/logo.png') }}" alt="Logo" class="logo-img">
-                <div class="logo-text">
-                    <span class="yayasan">Yayasan Pembangunan Pendidikan</span>
-                    <h1>SMK KRIAN 1</h1>
-                    <h2>SIDOARJO</h2>
+            <div class="logo" style="display:flex;align-items:center;gap:10px;">
+                <img src="{{ asset('assets-landing-page/logo.png') }}" alt="Logo" class="logo-img"
+                    style="height:50px;width:50px;object-fit:contain;">
+                <div class="logo-text" style="display:flex;flex-direction:column;line-height:1.1;">
+                    <span class="yayasan" style="font-size:12px;color:#555;">Yayasan Pembangunan Pendidikan</span>
+                    <h1 style="font-size:18px;font-weight:700;margin:0;">SMK KRIAN 1</h1>
+                    <h2 style="font-size:14px;font-weight:600;margin:0;color:#2563eb;">SIDOARJO</h2>
                 </div>
             </div>
 
-            <!-- Desktop Nav Items -->
-            <div class="nav-items" style="display: flex; align-items: center; gap: 24px;">
-                <div class="nav-item">
-                    <a href="#info"
-                        style="color: black; text-decoration: none; font-weight: 500; transition: color 0.3s;">
-                        Info
-                    </a>
-                </div>
+            <!-- Menu -->
+            <div class="nav-items" id="nav-menu"
+                style="display:flex;align-items:center;gap:24px;transition:max-height 0.3s ease,opacity 0.3s ease;">
+                <div class="nav-item"><a href="#info"
+                        style="color:black;text-decoration:none;font-weight:500;">Info</a></div>
+                <div class="nav-item"><a href="#fitur"
+                        style="color:black;text-decoration:none;font-weight:500;">Fitur</a></div>
+                <div class="nav-item"><a href="#guru"
+                        style="color:black;text-decoration:none;font-weight:500;">Guru</a></div>
+                <div class="nav-item"><a href="#profile"
+                        style="color:black;text-decoration:none;font-weight:500;">Profile</a></div>
+                <div class="nav-item"><a href="#jurusan"
+                        style="color:black;text-decoration:none;font-weight:500;">Jurusan</a></div>
+                <div class="nav-item"><a href="#pertanyaan"
+                        style="color:black;text-decoration:none;font-weight:500;">Pertanyaan</a></div>
+                <div class="nav-item"><a href="#alumni"
+                        style="color:black;text-decoration:none;font-weight:500;">Alumni</a></div>
 
-                <div class="nav-item">
-                    <a href="#fitur"
-                        style="color: black; text-decoration: none; font-weight: 500; transition: color 0.3s;">
-                        Fitur
+                @auth
+                    @if (auth()->user()->role === 'admin_utama')
+                        <a href="{{ route('profileSekolah.index') }}" class="user-icon"
+                            style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background-color:#2563eb;color:white;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.2);">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    @endif
+                @else
+                    <a href="{{ route('login') }}" class="user-icon"
+                        style="display:inline-flex;align-items:center;justify-content:center;width:80px;height:40px;border-radius:20px;background-color:#2563eb;color:white;font-weight:600;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.2);">
+                        Login
                     </a>
-                </div>
-
-                <div class="nav-item">
-                    <a href="#guru"
-                        style="color: black; text-decoration: none; font-weight: 500; transition: color 0.3s;">
-                        Guru
-                    </a>
-                </div>
-
-                <div class="nav-item">
-                    <a href="#profile"
-                        style="color: black; text-decoration: none; font-weight: 500; transition: color 0.3s;">
-                        Profile
-                    </a>
-                </div>
-
-                <div class="nav-item">
-                    <a href="#jurusan"
-                        style="color: black; text-decoration: none; font-weight: 500; transition: color 0.3s;">
-                        Jurusan
-                    </a>
-                </div>
-
-                <div class="nav-item">
-                    <a href="#pertanyaan"
-                        style="color: black; text-decoration: none; font-weight: 500; transition: color 0.3s;">
-                        Pertanyaan
-                    </a>
-                </div>
-
-                <div class="nav-item">
-                    <a href="#alumni"
-                        style="color: black; text-decoration: none; font-weight: 500; transition: color 0.3s;">
-                        Alumni
-                    </a>
-                </div>
+                @endauth
             </div>
 
-
-            @auth
-                @if (auth()->user()->role === 'admin_utama')
-                    <!-- Sudah login dan role admin_utama → tampil tombol profil -->
-                    <a href="{{ route('profileSekolah.index') }}" class="user-icon"
-                        style="
-                display:inline-flex;
-                align-items:center;
-                justify-content:center;
-                width:40px;
-                height:40px;
-                border-radius:50%;
-                background-color:#2563eb;
-                color:white;
-                text-decoration:none;
-                box-shadow:0 2px 6px rgba(0,0,0,0.2);
-                transition:background-color 0.3s ease;
-            "
-                        onmouseover="this.style.backgroundColor='#1e40af'"
-                        onmouseout="this.style.backgroundColor='#2563eb'">
-                        <i class="fas fa-user"></i>
-                    </a>
-                @endif
-            @else
-                <!-- Belum login → tombol Login -->
-                <a href="{{ route('login') }}" class="user-icon"
-                    style="
-            display:inline-flex;
-            align-items:center;
-            justify-content:center;
-            width:80px;
-            height:40px;
-            border-radius:20px;
-            background-color:#2563eb;
-            color:white;
-            font-weight:600;
-            text-decoration:none;
-            box-shadow:0 2px 6px rgba(0,0,0,0.2);
-            transition:background-color 0.3s ease;
-        "
-                    onmouseover="this.style.backgroundColor='#1e40af'" onmouseout="this.style.backgroundColor='#2563eb'">
-                    Login
-                </a>
-            @endauth
-
-
-
-            <!-- Mobile Menu Toggle -->
-            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <!-- Hamburger -->
+            <button id="menu-btn" onclick="toggleMobileMenu()"
+                style="background:none;border:none;font-size:22px;cursor:pointer;display:none;color:#2563eb;">
                 <i class="fas fa-bars"></i>
             </button>
         </header>
     </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('nav-menu');
+            menu.classList.toggle('active');
+        }
+    </script>
+
+    <style>
+        @media (max-width: 900px) {
+
+            /* Hilangkan teks yayasan */
+            .logo-text .yayasan {
+                display: none !important;
+            }
+
+            /* Tampilkan tombol hamburger */
+            #menu-btn {
+                display: block !important;
+            }
+
+            /* Gaya menu default tersembunyi */
+            #nav-menu {
+                position: absolute !important;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                border-radius: 0 0 20px 20px;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+                flex-direction: column !important;
+                align-items: center !important;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+            }
+
+            /* Saat aktif: slide turun halus */
+            #nav-menu.active {
+                max-height: 500px;
+                opacity: 1;
+                padding: 20px 0 25px 0;
+            }
+
+            /* Spasi antar item rapi */
+            #nav-menu .nav-item {
+                margin: 8px 0;
+            }
+
+            #nav-menu .nav-item a {
+                font-size: 15px;
+                color: #111;
+                font-weight: 500;
+                transition: color 0.2s ease;
+            }
+
+            #nav-menu .nav-item a:hover {
+                color: #2563eb;
+            }
+
+            /* Tombol login rapi di bawah */
+            #nav-menu .user-icon {
+                margin-top: 15px;
+            }
+        }
+    </style>
 
 
 
@@ -358,58 +363,6 @@
 
 
     <script>
-        // Mobile menu toggle
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-
-            mobileMenu.classList.toggle('active');
-            mobileMenuOverlay.classList.toggle('active');
-        }
-
-        // Toggle submenu in mobile
-        function toggleSubmenu(element) {
-            const submenu = element.nextElementSibling;
-            const chevron = element.querySelector('.chevron');
-
-            // Close other open submenus
-            const allSubmenus = document.querySelectorAll('.mobile-nav-submenu');
-            const allChevrons = document.querySelectorAll('.mobile-nav-item .chevron');
-            const allItems = document.querySelectorAll('.mobile-nav-item');
-
-            allSubmenus.forEach(sub => {
-                if (sub !== submenu) {
-                    sub.classList.remove('expanded');
-                }
-            });
-
-            allChevrons.forEach(chev => {
-                if (chev !== chevron) {
-                    chev.parentElement.classList.remove('expanded');
-                }
-            });
-
-            // Toggle current submenu
-            submenu.classList.toggle('expanded');
-            element.classList.toggle('expanded');
-        }
-
-        // Handle user click in mobile sidebar
-        function handleUserClick() {
-            alert('User profile clicked! Di sini bisa redirect ke halaman profil user.');
-        }
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const mobileMenu = document.getElementById('mobileMenu');
-            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-
-            if (!mobileMenu.contains(event.target) && !mobileMenuToggle.contains(event.target)) {
-                mobileMenu.classList.remove('active');
-                document.getElementById('mobileMenuOverlay').classList.remove('active');
-            }
-        });
-
         // Handle window resize
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {

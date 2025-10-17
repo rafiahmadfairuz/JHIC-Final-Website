@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\BadgePencapaian;
 use Illuminate\Database\Seeder;
+use App\Models\KategoriPencapaian;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -13,43 +15,79 @@ class BadgePencapaianSeeder extends Seeder
      */
     public function run(): void
     {
-        $now = now();
-        // Retrieve category IDs
-        $kategoriIds = DB::table('kategori_pencapaians')->pluck('id', 'nama_pencapaian');
-        $rows = [
+        $categories = KategoriPencapaian::all();
+
+        // Daftar badge contoh (10 total)
+        $badges = [
             [
-                'nama_pencapaian'          => 'Juara Kelas',
-                'syarat'                   => json_encode(['rapot_min' => 90]),
-                'kategori_pencapaian_id'   => $kategoriIds['Akademik'] ?? 1,
-                'gambar'                   => 'juara_kelas.png',
-                'created_at'               => $now,
-                'updated_at'               => $now,
+                'nama' => 'Rajin Nugas I',
+                'tipe' => 'tugas_selesai',
+                'syarat' => ['tipe' => 'tugas_selesai', 'jumlah' => 1],
+                'gambar' => 'badges/rajin-nugas-1.png',
             ],
             [
-                'nama_pencapaian'          => 'Atlet Berprestasi',
-                'syarat'                   => json_encode(['olahraga_event' => 'Peringkat 1']),
-                'kategori_pencapaian_id'   => $kategoriIds['Olahraga'] ?? 1,
-                'gambar'                   => 'atlet_berprestasi.png',
-                'created_at'               => $now,
-                'updated_at'               => $now,
+                'nama' => 'Rajin Nugas II',
+                'tipe' => 'tugas_selesai',
+                'syarat' => ['tipe' => 'tugas_selesai', 'jumlah' => 3],
+                'gambar' => 'badges/rajin-nugas-2.png',
             ],
             [
-                'nama_pencapaian'          => 'Seniman Muda',
-                'syarat'                   => json_encode(['karya' => 'Pameran']),
-                'kategori_pencapaian_id'   => $kategoriIds['Seni'] ?? 1,
-                'gambar'                   => 'seniman_muda.png',
-                'created_at'               => $now,
-                'updated_at'               => $now,
+                'nama' => 'Rajin Nugas III',
+                'tipe' => 'tugas_selesai',
+                'syarat' => ['tipe' => 'tugas_selesai', 'jumlah' => 5],
+                'gambar' => 'badges/rajin-nugas-3.png',
             ],
             [
-                'nama_pencapaian'          => 'Aktivis Organisasi',
-                'syarat'                   => json_encode(['organisasi' => 'Ketua']),
-                'kategori_pencapaian_id'   => $kategoriIds['Organisasi'] ?? 1,
-                'gambar'                   => 'aktivis_organisasi.png',
-                'created_at'               => $now,
-                'updated_at'               => $now,
+                'nama' => 'Nilai Rapot Bagus I',
+                'tipe' => 'rapot_bagus',
+                'syarat' => ['tipe' => 'rapot_bagus', 'min_rata' => 70],
+                'gambar' => 'badges/rapot-bagus-1.png',
+            ],
+            [
+                'nama' => 'Nilai Rapot Bagus II',
+                'tipe' => 'rapot_bagus',
+                'syarat' => ['tipe' => 'rapot_bagus', 'min_rata' => 80],
+                'gambar' => 'badges/rapot-bagus-2.png',
+            ],
+            [
+                'nama' => 'Nilai Rapot Bagus III',
+                'tipe' => 'rapot_bagus',
+                'syarat' => ['tipe' => 'rapot_bagus', 'min_rata' => 90],
+                'gambar' => 'badges/rapot-bagus-3.png',
+            ],
+            [
+                'nama' => 'Sikap Baik I',
+                'tipe' => 'perilaku_baik',
+                'syarat' => ['tipe' => 'perilaku_baik', 'minimal_poin' => 10],
+                'gambar' => 'badges/perilaku-1.png',
+            ],
+            [
+                'nama' => 'Sikap Baik II',
+                'tipe' => 'perilaku_baik',
+                'syarat' => ['tipe' => 'perilaku_baik', 'minimal_poin' => 20],
+                'gambar' => 'badges/perilaku-2.png',
+            ],
+            [
+                'nama' => 'Sikap Baik III',
+                'tipe' => 'perilaku_baik',
+                'syarat' => ['tipe' => 'perilaku_baik', 'minimal_poin' => 50],
+                'gambar' => 'badges/perilaku-3.png',
+            ],
+            [
+                'nama' => 'All Rounder',
+                'tipe' => 'rapot_bagus',
+                'syarat' => ['tipe' => 'rapot_bagus', 'min_rata' => 85],
+                'gambar' => 'badges/allrounder.png',
             ],
         ];
-        DB::table('badge_pencapaians')->insert($rows);
+
+        foreach ($badges as $b) {
+            BadgePencapaian::create([
+                'nama_pencapaian' => $b['nama'],
+                'syarat' => $b['syarat'], // kolom sudah di-cast ke array
+                'kategori_pencapaian_id' => $categories->random()->id,
+                'gambar' => $b['gambar'],
+            ]);
+        }
     }
 }
