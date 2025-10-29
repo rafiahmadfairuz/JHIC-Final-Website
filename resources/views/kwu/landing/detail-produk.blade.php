@@ -35,7 +35,7 @@
                 </div>
                 <div id="tabContent">
                     <div id="details" class="tab-content">
-                        <p class="text-gray-700">Detail produk: {{ $produk->nama }}</p>
+                        <p class="text-gray-700">Detail produk: {{ $produk->deskripsi }}</p>
                         <p class="text-gray-700">Stok: {{ $produk->stok }}</p>
                         <p class="text-gray-700">Kategori: {{ $produk->kategori->nama }}</p>
                     </div>

@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/melamar/{id}', [JobfairController::class, 'storeMelamar'])->name('jobfair.storemelamar');
         Route::get('/lamaran/berhasil', [JobfairController::class, 'lamaranBerhasil'])->name('jobfair.lamaran.berhasil');
         Route::get('/profil', [JobfairController::class, 'showProfil'])->name('landing.jobfair.profil');
+        Route::get('/lamaran/{pekerjaan}/{id}', [JobfairController::class, 'showdetailjobfair'])->name('landing.jobfair.lamaranprofil');
     });
 
     Route::prefix('dashboard/jobfair')->group(function () {

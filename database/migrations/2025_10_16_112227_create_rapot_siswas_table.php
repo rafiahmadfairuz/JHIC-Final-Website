@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rapot_siswas', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('mapel_id')->constrained('mapels')->onDelete('cascade');
-            $table->foreignId('siswa_id')->constrained('users')->onDelete('cascade');
-            $table->integer('nilai');
-            $table->timestamps();
-        });
+            Schema::create('rapot_siswas', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('mapel_id')->constrained('mapels')->onDelete('cascade');
+                $table->foreignId('siswa_id')->constrained('users')->onDelete('cascade');
+                $table->integer('nilai');
+                $table->timestamps();
+            });
     }
 
     /**

@@ -5,7 +5,6 @@
                 <h1 class="text-3xl font-bold text-gray-800">{{ $toko->nama_toko }}</h1>
                 <p class="text-gray-600 mt-2 max-w-lg">{{ $toko->deskripsi }}</p>
                 <div class="flex items-center mt-4 space-x-3">
-                    <span class="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">Terverifikasi</span>
                     <span class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
                         {{ $toko->produks->count() }} Produk
                     </span>

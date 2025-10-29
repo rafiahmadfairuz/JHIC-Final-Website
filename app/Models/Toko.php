@@ -18,7 +18,7 @@ class Toko extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'toko_user');
+        return $this->belongsToMany(User::class, 'toko_users');
     }
 
     public function produks(): HasMany

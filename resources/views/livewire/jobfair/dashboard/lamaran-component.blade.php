@@ -4,7 +4,7 @@
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-lg font-bold">Daftar Lamaran</h2>
                 <div class="flex items-center space-x-2">
-                    <input type="text"  wire:model.debounce.500ms="search" placeholder="Cari lamaran..."
+                    <input type="text" wire:model.debounce.500ms="search" placeholder="Cari lamaran..."
                         class="px-3 py-2 border rounded text-sm focus:ring focus:ring-blue-300" />
                     <button wire:click="create" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                         <i class="fas fa-plus mr-2"></i> Add
@@ -25,6 +25,7 @@
                             <th class="p-3">Pekerjaan</th>
                             <th class="p-3">Pelamar</th>
                             <th class="p-3">Status</th>
+                            <th class="p-3">Show</th>
                             <th class="p-3">Actions</th>
                         </tr>
                     </thead>
@@ -35,6 +36,12 @@
                                 <td class="p-3">{{ $lamaran->pekerjaan->judul }}</td>
                                 <td class="p-3">{{ $lamaran->pelamar->nama_lengkap }}</td>
                                 <td class="p-3">{{ $lamaran->status }}</td>
+                                <td class="p-3">
+                                    <a href="{{ route('landing.jobfair.lamaranprofil', ['pekerjaan' => $lamaran->id, 'id' => $lamaran->pelamar->id]) }}"
+                                        class="text-blue-600 underline">
+                                        Detail
+                                    </a>
+                                </td>
                                 <td class="p-3 space-x-2">
                                     <button wire:click="edit({{ $lamaran->id }})"
                                         class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
