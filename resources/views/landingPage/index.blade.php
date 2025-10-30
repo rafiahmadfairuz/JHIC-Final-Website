@@ -13,129 +13,180 @@
 </head>
 
 <body>
-    <!-- Navbar -->
+    <!-- ========================= -->
+    <!-- NAVBAR -->
+    <!-- ========================= -->
     <div class="navbar-wrapper" id="navbar">
-        <header class="navbar"
-            style="display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-radius:20px;background:white;box-shadow:0 4px 16px rgba(0,0,0,0.08);max-width:1200px;margin:auto;flex-wrap:wrap;position:relative;z-index:10;">
-
-            <!-- Logo -->
-            <div class="logo" style="display:flex;align-items:center;gap:10px;">
-                <img src="{{ asset('assets-landing-page/logo.png') }}" alt="Logo" class="logo-img"
-                    style="height:50px;width:50px;object-fit:contain;">
-                <div class="logo-text" style="display:flex;flex-direction:column;line-height:1.1;">
-                    <span class="yayasan" style="font-size:12px;color:#555;">Yayasan Pembangunan Pendidikan</span>
-                    <h1 style="font-size:18px;font-weight:700;margin:0;">SMK KRIAN 1</h1>
-                    <h2 style="font-size:14px;font-weight:600;margin:0;color:#2563eb;">SIDOARJO</h2>
+        <header class="navbar">
+            <!-- LOGO -->
+            <div class="logo">
+                <img src="{{ asset('assets-landing-page/logo.png') }}" alt="Logo" class="logo-img">
+                <div class="logo-text">
+                    <span class="yayasan">Yayasan Pembangunan Pendidikan</span>
+                    <h1>SMK KRIAN 1</h1>
+                    <h2>SIDOARJO</h2>
                 </div>
             </div>
 
-            <!-- Menu -->
-            <div class="nav-items" id="nav-menu"
-                style="display:flex;align-items:center;gap:24px;transition:max-height 0.3s ease,opacity 0.3s ease;">
-                <div class="nav-item"><a href="#info"
-                        style="color:black;text-decoration:none;font-weight:500;">Info</a></div>
-                <div class="nav-item"><a href="#fitur"
-                        style="color:black;text-decoration:none;font-weight:500;">Fitur</a></div>
-                <div class="nav-item"><a href="#guru"
-                        style="color:black;text-decoration:none;font-weight:500;">Guru</a></div>
-                <div class="nav-item"><a href="#profile"
-                        style="color:black;text-decoration:none;font-weight:500;">Profile</a></div>
-                <div class="nav-item"><a href="#jurusan"
-                        style="color:black;text-decoration:none;font-weight:500;">Jurusan</a></div>
-                <div class="nav-item"><a href="#pertanyaan"
-                        style="color:black;text-decoration:none;font-weight:500;">Pertanyaan</a></div>
-                <div class="nav-item"><a href="#alumni"
-                        style="color:black;text-decoration:none;font-weight:500;">Alumni</a></div>
-
-                @auth
-                    @if (auth()->user()->role === 'admin_utama')
-                        <a href="{{ route('profileSekolah.index') }}" class="user-icon"
-                            style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background-color:#2563eb;color:white;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.2);">
-                            <i class="fas fa-user"></i>
-                        </a>
-                    @endif
-                @else
-                    <a href="{{ route('login') }}" class="user-icon"
-                        style="display:inline-flex;align-items:center;justify-content:center;width:80px;height:40px;border-radius:20px;background-color:#2563eb;color:white;font-weight:600;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.2);">
-                        Login
-                    </a>
-                @endauth
+            <!-- NAV ITEMS (DESKTOP) -->
+            <div class="nav-items">
+                <a href="#info" class="nav-item">Info</a>
+                <a href="#fitur" class="nav-item">Fitur</a>
+                <a href="#guru" class="nav-item">Guru</a>
+                <a href="#profile" class="nav-item">Profile</a>
+                <a href="#jurusan" class="nav-item">Jurusan</a>
+                <a href="#pertanyaan" class="nav-item">Pertanyaan</a>
+                <a href="#alumni" class="nav-item">Alumni</a>
             </div>
 
-            <!-- Hamburger -->
-            <button id="menu-btn" onclick="toggleMobileMenu()"
-                style="background:none;border:none;font-size:22px;cursor:pointer;display:none;color:#2563eb;">
+            <!-- USER ICON (DESKTOP) -->
+            @auth
+                @if (auth()->user()->role === 'admin_utama')
+                    <a href="{{ route('profileSekolah.index') }}" class="user-icon" title="Admin Utama">
+                        <i class="fas fa-user-shield"></i>
+                    </a>
+                @elseif (auth()->user()->role === 'admin_perpus')
+                    <a href="{{ route('perpus.dashboard') }}" class="user-icon" title="Admin Perpustakaan">
+                        <i class="fas fa-book"></i>
+                    </a>
+                @elseif (auth()->user()->role === 'admin_bkk')
+                    <a href="{{ route('bkk.dashboard') }}" class="user-icon" title="Admin BKK">
+                        <i class="fas fa-briefcase"></i>
+                    </a>
+                @elseif (auth()->user()->role === 'siswa')
+                    <div class="user-icon" title="Siswa">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                @else
+                    <div class="user-icon" title="Pengguna">
+                        <i class="fas fa-user"></i>
+                    </div>
+                @endif
+            @else
+                <a href="{{ route('login') }}" class="user-icon" title="Login">
+                    <i class="fas fa-sign-in-alt"></i>
+                </a>
+            @endauth
+
+
+            <!-- MOBILE MENU BUTTON -->
+            <button class="mobile-menu-toggle" id="menu-btn">
                 <i class="fas fa-bars"></i>
             </button>
         </header>
     </div>
 
+    <!-- ========================= -->
+    <!-- MOBILE SIDEBAR MENU -->
+    <!-- ========================= -->
+    <div class="mobile-menu-overlay" id="menu-overlay"></div>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <button class="mobile-menu-close" id="menu-close">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <div class="mobile-menu-content">
+            <div class="mobile-nav-section">
+                <a href="#info" class="mobile-nav-item"><i class="fas fa-info-circle"></i> Info</a>
+                <a href="#fitur" class="mobile-nav-item"><i class="fas fa-cogs"></i> Fitur</a>
+                <a href="#guru" class="mobile-nav-item"><i class="fas fa-user-graduate"></i> Guru</a>
+                <a href="#profile" class="mobile-nav-item"><i class="fas fa-school"></i> Profile</a>
+                <a href="#jurusan" class="mobile-nav-item"><i class="fas fa-tools"></i> Jurusan</a>
+                <a href="#pertanyaan" class="mobile-nav-item"><i class="fas fa-question-circle"></i> Pertanyaan</a>
+                <a href="#alumni" class="mobile-nav-item"><i class="fas fa-users"></i> Alumni</a>
+            </div>
+
+            <!-- USER SECTION -->
+            @auth
+                <div class="mobile-user-info">
+                    <div class="user-icon">
+                        @switch(auth()->user()->role)
+                            @case('admin_utama')
+                                <i class="fas fa-user-shield"></i>
+                            @break
+
+                            @case('admin_perpus')
+                                <i class="fas fa-book"></i>
+                            @break
+
+                            @case('admin_bkk')
+                                <i class="fas fa-briefcase"></i>
+                            @break
+
+                            @case('siswa')
+                                <i class="fas fa-user-graduate"></i>
+                            @break
+
+                            @default
+                                <i class="fas fa-user"></i>
+                        @endswitch
+                    </div>
+                    <div>
+                        <div class="user-label">{{ auth()->user()->nama_lengkap }}</div>
+                        <div class="user-subtitle">
+                            @switch(auth()->user()->role)
+                                @case('admin_utama')
+                                    Admin Utama
+                                @break
+
+                                @case('admin_perpus')
+                                    Admin Perpustakaan
+                                @break
+
+                                @case('admin_bkk')
+                                    Admin BKK
+                                @break
+
+                                @case('siswa')
+                                    Siswa
+                                @break
+
+                                @default
+                                    Pengguna
+                            @endswitch
+                        </div>
+                    </div>
+                </div>
+            @else
+                <div class="mobile-user-info" onclick="window.location='{{ route('login') }}'">
+                    <div class="user-icon"><i class="fas fa-sign-in-alt"></i></div>
+                    <div>
+                        <div class="user-label">Login</div>
+                        <div class="user-subtitle">Masuk ke akunmu</div>
+                    </div>
+                </div>
+            @endauth
+        </div>
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- SCRIPT -->
+    <!-- ========================= -->
     <script>
-        function toggleMobileMenu() {
-            const menu = document.getElementById('nav-menu');
-            menu.classList.toggle('active');
-        }
+        const menuBtn = document.getElementById("menu-btn");
+        const menu = document.getElementById("mobile-menu");
+        const overlay = document.getElementById("menu-overlay");
+        const closeBtn = document.getElementById("menu-close");
+
+        menuBtn.addEventListener("click", () => {
+            menu.classList.add("active");
+            overlay.classList.add("active");
+        });
+
+        closeBtn.addEventListener("click", () => {
+            menu.classList.remove("active");
+            overlay.classList.remove("active");
+        });
+
+        overlay.addEventListener("click", () => {
+            menu.classList.remove("active");
+            overlay.classList.remove("active");
+        });
     </script>
 
-    <style>
-        @media (max-width: 900px) {
 
-            /* Hilangkan teks yayasan */
-            .logo-text .yayasan {
-                display: none !important;
-            }
-
-            /* Tampilkan tombol hamburger */
-            #menu-btn {
-                display: block !important;
-            }
-
-            /* Gaya menu default tersembunyi */
-            #nav-menu {
-                position: absolute !important;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: white;
-                border-radius: 0 0 20px 20px;
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-                flex-direction: column !important;
-                align-items: center !important;
-                padding: 0;
-                max-height: 0;
-                overflow: hidden;
-                opacity: 0;
-            }
-
-            /* Saat aktif: slide turun halus */
-            #nav-menu.active {
-                max-height: 500px;
-                opacity: 1;
-                padding: 20px 0 25px 0;
-            }
-
-            /* Spasi antar item rapi */
-            #nav-menu .nav-item {
-                margin: 8px 0;
-            }
-
-            #nav-menu .nav-item a {
-                font-size: 15px;
-                color: #111;
-                font-weight: 500;
-                transition: color 0.2s ease;
-            }
-
-            #nav-menu .nav-item a:hover {
-                color: #2563eb;
-            }
-
-            /* Tombol login rapi di bawah */
-            #nav-menu .user-icon {
-                margin-top: 15px;
-            }
-        }
-    </style>
 
 
 
@@ -165,9 +216,14 @@
 
         <!-- Foto 1 MASKOT -->
         <div class="kepsek-wrapper">
-            <img src="{{ asset('shape-02.png') }}" alt="" class="shape-bg">
-            <img src="{{ asset('storage/' . $maskot->gambar_maskot ?? 'assets-landing-page/kepsek.png') }}"
-                alt="Kepala Sekolah" class="kepsek-img">
+
+
+
+            <!-- Gambar Kepala Sekolah / Maskot -->
+            <img src="{{ asset(isset($maskot) && $maskot->gambar_maskot ? 'storage/' . $maskot->gambar_maskot : 'assets-landing-page/kepsek.png') }}"
+                alt="Foto Kepala Sekolah" class="kepsek-img">
+
+            <!-- Info Kepala Sekolah -->
             <div class="kepsek-info">
                 <h3>{{ $maskot->nama_maskot ?? 'Nama Maskot' }}</h3>
                 <p>{{ $maskot->jabatan ?? 'Kepala Sekolah SMK Krian 1 Sidoarjo' }}</p>
@@ -262,19 +318,118 @@
     <!-- SECTION PROFILE SEKOLAH -->
     <section class="profile-section" id="profile">
         <h2 class="profile-title">Profile Sekolah</h2>
+
         <div class="wave-bg">
             <img src="{{ asset('assets-landing-page/Vector.png') }}" alt="Wave 1" class="wave wave1">
             <img src="{{ asset('assets-landing-page/Vector (1).png') }}" alt="Wave 2" class="wave wave2">
         </div>
 
         <div class="video-container">
-            <div class="video-wrapper">
-                <img src="{{ asset('storage/' . $profile->banner_img ?? 'assets-landing-page/tumblail.png') }}"
-                    alt="Profile Sekolah" class="video-thumbnail">
-                <a href="{{ $profile->link_video ?? '#' }}" target="_blank" class="play-btn">▶</a>
+            <div class="video-wrapper" id="videoWrapper">
+                <!-- Thumbnail -->
+                <img src="{{ asset(isset($profile) && $profile->banner_img ? 'storage/' . $profile->banner_img : 'assets-landing-page/t.png') }}"
+                    alt="Thumbnail" class="thumbnail">
+
+                <!-- Tombol Play -->
+                <a href="{{ $profile->link_video ?? '#' }}" class="play-btn" id="playBtn">▶</a>
             </div>
         </div>
     </section>
+
+    <style>
+        .profile-section {
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+            padding: 100px 20px;
+        }
+
+        .wave-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .wave-bg .wave {
+            position: absolute;
+            width: 100%;
+            opacity: 0.7;
+        }
+
+        .video-container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .video-wrapper {
+            position: relative;
+            display: inline-block;
+            max-width: 600px;
+            width: 90%;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-wrapper img.thumbnail {
+            width: 100%;
+            display: block;
+            border-radius: 16px;
+        }
+
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            color: black;
+            font-size: 32px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .play-btn:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+    </style>
+
+    <script>
+        document.getElementById("playBtn").addEventListener("click", function(event) {
+            event.preventDefault(); // biar gak buka tab baru
+
+            const wrapper = document.getElementById("videoWrapper");
+            const youtubeLink = this.getAttribute("href"); // ambil dari link admin
+            const videoId = youtubeLink.includes("v=") ?
+                youtubeLink.split("v=")[1].split("&")[0] :
+                youtubeLink.split("/").pop();
+
+            // ganti isi wrapper jadi iframe YouTube
+            wrapper.innerHTML = `
+    <iframe
+      width="100%" height="340"
+      src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+      title="Video Profile Sekolah"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      style="border-radius:16px;">
+    </iframe>
+  `;
+        });
+    </script>
+
 
     <section class="jurusan-section" id="jurusan">
         <div class="jurusan-header">
@@ -328,38 +483,201 @@
     <!-- SECTION ALUMNI -->
     <section class="alumni-section" id="alumni">
         <h2 class="alumni-title">Apa <span>Kata</span> Alumni</h2>
-        <p class="alumni-subtitle">Lihat bagaimana testimoni alumni SMK Krian 1 yang sekarang bekerja atau berkuliah
+        <p class="alumni-subtitle">
+            Lihat bagaimana testimoni alumni SMK Krian 1 yang sekarang bekerja atau berkuliah
         </p>
 
         <div class="alumni-row row-1">
             <div class="alumni-track">
-                @foreach ($alumnis as $a)
-                    <div class="alumni-card">
-                        @php
-                            $inisial = strtoupper(substr($a->nama, 0, 1));
-                        @endphp
+                <style>
+                    .alumni-card {
+                        width: 550px;
+                        height: 220px;
+                        background: #fff;
+                        border-radius: 12px;
+                        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+                        text-align: center;
+                        padding: 16px;
+                        overflow: hidden;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: start;
+                    }
 
+                    .alumni-img,
+                    .alumni-initial {
+                        width: 64px;
+                        height: 64px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                        margin-bottom: 12px;
+                        border: 2px solid #fff;
+                        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                    }
+
+                    .alumni-initial {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 20px;
+                        font-weight: bold;
+                        color: white;
+                    }
+
+                    .alumni-name {
+                        font-weight: 600;
+                        color: #333;
+                        font-size: 16px;
+                        margin: 0;
+                        width: 100%;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+
+                    .alumni-jurusan {
+                        color: #666;
+                        font-size: 14px;
+                        margin: 4px 0;
+                        width: 100%;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+
+                    .alumni-desc {
+                        color: #777;
+                        font-size: 13px;
+                        font-style: italic;
+                        margin-top: 6px;
+                        max-height: 38px;
+                        /* kira-kira 2 baris */
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                    }
+
+                    /* warna background avatar */
+                    .bg-purple {
+                        background: #c084fc;
+                    }
+
+                    .bg-blue {
+                        background: #60a5fa;
+                    }
+
+                    .bg-green {
+                        background: #4ade80;
+                    }
+
+                    .bg-orange {
+                        background: #fb923c;
+                    }
+
+                    .bg-pink {
+                        background: #f472b6;
+                    }
+
+                    .bg-teal {
+                        background: #2dd4bf;
+                    }
+
+                    .bg-red {
+                        background: #f87171;
+                    }
+
+                    .bg-indigo {
+                        background: #818cf8;
+                    }
+                </style>
+
+                @foreach ($alumnis as $a)
+                    @php
+                        $inisial = strtoupper(substr($a->nama, 0, 1));
+                        $colors = ['purple', 'blue', 'green', 'orange', 'pink', 'teal', 'red', 'indigo'];
+                        $color = $colors[crc32($a->nama) % count($colors)];
+                    @endphp
+
+                    <div class="alumni-card">
                         @if (!empty($a->gambar))
                             <img src="{{ asset('storage/' . $a->gambar) }}" alt="{{ $a->nama }}"
-                                class="w-16 h-16 rounded-full object-cover border-2 border-blue-500 shadow-md">
+                                class="alumni-img">
                         @else
-                            <div
-                                class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600
-                text-white flex items-center justify-center text-xl font-bold
-                shadow-md border-2 border-white">
+                            <div class="alumni-initial bg-{{ $color }}">
                                 {{ $inisial }}
                             </div>
                         @endif
 
-                        <h4 class="mt-2 text-gray-800 font-semibold">{{ $a->nama }}</h4>
-
-                        <p>{{ $a->jurusan }}</p>
-                        <small>“{{ $a->keterangan }}”</small>
+                        <h4 class="alumni-name">{{ $a->nama }}</h4>
+                        <p class="alumni-jurusan">{{ $a->jurusan }}</p>
+                        <small class="alumni-desc">“{{ $a->keterangan }}”</small>
                     </div>
                 @endforeach
+
             </div>
         </div>
     </section>
+
+
+
+
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- KIRI -->
+            <div class="footer-left">
+                <img src="{{ asset('assets-landing-page/logo.png') }}" alt="Logo" class="logo-img">
+                <h3>SMK KRIAN 1</h3>
+                <p class="tagline">#TerbaikTerdepanSikat</p>
+                <p class="desc">
+                    Mencetak generasi unggul yang siap kerja, siap kuliah, dan siap bersaing secara global.
+                </p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/smkkrian1/"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.tiktok.com/@skarisabisa"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+
+            <!-- TENGAH -->
+            <div class="footer-center">
+                <h4>Menu Navigasi</h4>
+                <ul>
+                    <li><a href="#info">Info</a></li>
+                    <li><a href="#fitur">Fitur</a></li>
+                    <li><a href="#guru">Guru</a></li>
+                    <li><a href="#profile">Profil</a></li>
+                    <li><a href="#jurusan">Jurusan</a></li>
+                    <li><a href="#pertanyaan">Pertanyaan</a></li>
+                    <li><a href="#alumni">Alumni</a></li>
+                </ul>
+            </div>
+
+            <!-- KANAN -->
+            <div class="footer-right">
+                <h4>Lokasi Kami</h4>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3955.312408367175!2d112.5846!3d-7.4207!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e1f2147a07cb%3A0xd09c70f28775b49b!2sSMK%20Krian%201%20Sidoarjo!5e0!3m2!1sid!2sid!4v1730050000000!5m2!1sid!2sid"
+                    width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy">
+                </iframe>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>©2025 <strong>SMK KRIAN 1</strong> | Designed by <strong>Unexpected Loop</strong></p>
+        </div>
+    </footer>
+
+
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+
+
+
 
 
     <script>
