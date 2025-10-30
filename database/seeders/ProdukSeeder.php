@@ -18,7 +18,7 @@ class ProdukSeeder extends Seeder
         $tokoIds    = DB::table('tokos')->pluck('id')->toArray();
         $rows       = [];
         foreach ($tokoIds as $tokoId) {
-            for ($i = 1; $i <= 3; $i++) {
+            for ($i = 1; $i <= 6; $i++) {
                 $rows[] = [
                     'nama'       => 'Produk ' . $i . ' Toko ' . $tokoId,
                     'toko_id'    => $tokoId,

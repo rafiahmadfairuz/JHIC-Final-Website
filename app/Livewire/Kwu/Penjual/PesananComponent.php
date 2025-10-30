@@ -4,8 +4,11 @@ namespace App\Livewire\Kwu\Penjual;
 
 use App\Models\Order;
 use Livewire\Component;
+use App\Models\OrderItem;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PesananComponent extends Component
 {
@@ -80,20 +83,16 @@ class PesananComponent extends Component
 
     public function render()
     {
-        $toko = auth()->user()->tokos()->first();
-
-        $query = Order::whereHas('items.produk', function ($q) use ($toko) {
-            $q->where('toko_id', $toko->id);
-        })->with(['items.produk', 'pembeli']);
-
-        if (!empty($this->status)) {
-            $query->where('status', $this->status);
-        }
-
-        $orders = $query->latest()->paginate(10);
+        $user = Auth::user()->id;
+        
+        $orders = OrderItem::with(['order', 'produk'])
+            ->whereHas('produk.toko.users', function ($q) use ($user) {
+                $q->where('user_id', $user);
+            })->latest()->paginate(10);
 
         return view('livewire.kwu.penjual.pesanan-component', [
             'orders' => $orders
         ]);
     }
+
 }

@@ -4,13 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LMS Siswa</title>
+    <title>Detail Pelamar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-[some-integrity-hash]" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script>
         tailwind.config = {
             theme: {
@@ -222,47 +220,47 @@
 
 
     <div class=" min-h-screen">
-            <header class="bg-white shadow-sm border-b border-gray-100 px-4 md:px-6 py-4 sticky top-0 z-10">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                <button id="mobile-menu" class="md:hidden p-2 text-gray-600 hover:text-gray-800">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-                <h2 id="page-title" class="text-xl md:text-2xl font-bold text-gray-800">Detail Lamaran
-                </h2>
-            </div>
-            <div class="flex items-center space-x-2 md:space-x-4">
-                <!-- User Profile -->
-                <div class="relative">
-                    @php
-                        $user = Auth::user();
-                        $nama = $user->nama_lengkap ?? 'User';
-                        $words = explode(' ', trim($nama));
-                        $initials = strtoupper(
-                            substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : ''),
-                        );
-                        $colors = ['purple', 'blue', 'green', 'orange', 'pink', 'teal', 'red', 'indigo'];
-                        $color = $colors[crc32($nama) % count($colors)];
-                    @endphp
+        <header class="bg-white shadow-sm border-b border-gray-100 px-4 md:px-6 py-4 sticky top-0 z-10">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button id="mobile-menu" class="md:hidden p-2 text-gray-600 hover:text-gray-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                    <h2 id="page-title" class="text-xl md:text-2xl font-bold text-gray-800">Detail Lamaran
+                    </h2>
+                </div>
+                <div class="flex items-center space-x-2 md:space-x-4">
+                    <!-- User Profile -->
+                    <div class="relative">
+                        @php
+                            $user = Auth::user();
+                            $nama = $user->nama_lengkap ?? 'User';
+                            $words = explode(' ', trim($nama));
+                            $initials = strtoupper(
+                                substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : ''),
+                            );
+                            $colors = ['purple', 'blue', 'green', 'orange', 'pink', 'teal', 'red', 'indigo'];
+                            $color = $colors[crc32($nama) % count($colors)];
+                        @endphp
 
-                    <a href="{{ route('lms.profile') }}" id="user-menu-btn"
-                        class="flex items-center space-x-2 p-1 rounded-full hover:bg-gray-100 transition-colors">
-                        <div
-                            class="w-8 h-8 rounded-full bg-{{ $color }}-100 flex items-center justify-center text-{{ $color }}-700 font-bold text-sm">
-                            {{ $initials }}
-                        </div>
-                        <span class="font-medium text-gray-700 hidden md:block">{{ $nama }}</span>
+                        <a href="{{ route('lms.profile') }}" id="user-menu-btn"
+                            class="flex items-center space-x-2 p-1 rounded-full hover:bg-gray-100 transition-colors">
+                            <div
+                                class="w-8 h-8 rounded-full bg-{{ $color }}-100 flex items-center justify-center text-{{ $color }}-700 font-bold text-sm">
+                                {{ $initials }}
+                            </div>
+                            <span class="font-medium text-gray-700 hidden md:block">{{ $nama }}</span>
 
-                    </a>
+                        </a>
 
 
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
         <main id="page-content" class="p-4 md:p-6">
             <div class="p-4 md:p-6 max-w-7xl mx-auto space-y-8">
 
@@ -350,52 +348,6 @@
                     </div>
                 </div>
 
-                {{-- GRID UTAMA --}}
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {{-- KIRI: Kursus --}}
-                    <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 overflow-y-auto"
-                        style="max-height: 480px;">
-                        <h2 class="text-xl font-bold text-gray-800 mb-4">Kursus Aktif</h2>
-                        <div class="space-y-4">
-                            @forelse($kursuses as $kursus)
-                                <div
-                                    class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="w-10 h-10 {{ $kursus['warna'] }} rounded-lg flex items-center justify-center">
-                                            <i class="fas fa-book text-base"></i>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-semibold text-gray-800">{{ $kursus['nama'] }}</h4>
-                                            <p class="text-xs text-gray-500">{{ $kursus['mapel'] }} •
-                                                {{ $kursus['guru'] }}
-                                            </p>
-                                            <div class="w-32 bg-gray-200 h-2 rounded-full mt-1">
-                                                <div class="h-2 bg-indigo-500 rounded-full"
-                                                    style="width: {{ $kursus['progress'] }}%"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <span class="text-sm text-gray-600">{{ $kursus['progress'] }}%</span>
-                                </div>
-                            @empty
-                                <p class="text-gray-500 text-sm">Belum ada kursus untuk kelas ini.</p>
-                            @endforelse
-                        </div>
-                    </div>
-
-                    {{-- KANAN: Grafik --}}
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                        <div class="flex items-center gap-2 mb-4">
-                            <i class="fas fa-chart-bar text-gray-600"></i>
-                            <h2 class="font-bold text-gray-800">Distribusi Nilai</h2>
-                        </div>
-                        <div class="relative h-64 flex justify-center">
-                            <canvas id="gradesChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
                 {{-- NILAI + BADGE + RANKING --}}
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {{-- NILAI MAPEL --}}
@@ -463,29 +415,22 @@
                         </div>
                     </div>
 
-                    {{-- BADGES & RANKING --}}
-                    <div class="space-y-6">
-                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                            <h3 class="font-bold text-gray-800 mb-3">3 Produk paling banyak terjual</h3>
-                            <div class="space-y-3">
-                                @forelse ($topProducts as $b)
-                                    <div class="flex items-center gap-3 p-3 bg-yellow-50 rounded-xl">
-                                        <div>
-                                            <p class="font-semibold text-gray-700">{{ $b->produk->nama }}</p>
-                                            <p class="text-sm text-gray-500">Terjual: {{ $b->total_terjual }}</p>
-                                        </div>
-                                    </div>
-                                @empty
-                                    <p class="text-sm text-gray-500">Tidak ada produk yang terjual.</p>
-                                @endforelse
 
-                            </div>
+                    {{-- KANAN: Grafik --}}
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex items-center gap-2 mb-4">
+                            <i class="fas fa-chart-bar text-gray-600"></i>
+                            <h2 class="font-bold text-gray-800">Produk Terjual</h2>
+                        </div>
+                        <div class="relative h-64 flex justify-center">
+                            <canvas id="gradesChart"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
 
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
             <script>
                 const ctx = document.getElementById('gradesChart').getContext('2d');
                 new Chart(ctx, {
@@ -493,7 +438,7 @@
                     data: {
                         labels: @json($chartLabels),
                         datasets: [{
-                            label: 'Nilai',
+                            label: 'Total Terjual',
                             data: @json($chartData),
                             backgroundColor: ['#6366F1', '#F59E0B', '#10B981', '#3B82F6', '#EC4899', '#8B5CF6'],
                             borderColor: '#4B5563',
@@ -512,7 +457,6 @@
                             y: {
                                 stacked: true,
                                 beginAtZero: true,
-                                max: 100,
                                 ticks: {
                                     color: '#374151'
                                 }
@@ -524,7 +468,7 @@
                             },
                             title: {
                                 display: true,
-                                text: 'Distribusi Nilai Siswa',
+                                text: 'Distribusi Produk Terjual',
                                 color: '#111827',
                                 font: {
                                     size: 16,
@@ -535,6 +479,7 @@
                     }
                 });
             </script>
+
         </main>
     </div>
     <!-- Modal Preview -->

@@ -5,7 +5,9 @@ namespace App\Livewire\Jobfair\Dashboard;
 use Livewire\Component;
 use App\Models\Perusahaan;
 use Livewire\WithPagination;
+use App\Mail\StatusLamaranMail;
 use App\Models\MelamarPekerjaan;
+use Illuminate\Support\Facades\Mail;
 
 class LamaranComponent extends Component
 {
@@ -89,19 +91,29 @@ class LamaranComponent extends Component
 
     public function render()
     {
-        $query = MelamarPekerjaan::with('pekerjaan', 'pelamar')
-            ->when($this->search, function ($q) {
-                $search = $this->search;
-                $q->where(function ($query) use ($search) {
-                    $query->whereHas('pekerjaan', fn($sub) => $sub->where('judul', 'like', "%$search%"))
-                        ->orWhereHas('pelamar', fn($sub) => $sub->where('nama_lengkap', 'like', "%$search%"))
-                        ->orWhere('status', 'like', "%$search%");
-                });
-            })
-            ->latest();
+        $user = auth()->user();
 
-        $lamarans = $query->paginate(10);
+        $query = MelamarPekerjaan::with('pekerjaan', 'pelamar');
+
+        if ($user->role === 'perusahaan') {
+            $query->whereHas('pekerjaan', function ($q) use ($user) {
+                $q->where('perusahaan_id', $user->perusahaan->id);
+            });
+        }
+
+        $query->when($this->search, function ($q) {
+            $search = $this->search;
+            $q->where(function ($query) use ($search) {
+                $query->whereHas('pekerjaan', fn($sub) => $sub->where('judul', 'like', "%$search%"))
+                    ->orWhereHas('pelamar', fn($sub) => $sub->where('nama_lengkap', 'like', "%$search%"))
+                    ->orWhere('status', 'like', "%$search%");
+            });
+        });
+
+        $lamarans = $query->latest()->paginate(10);
 
         return view('livewire.jobfair.dashboard.lamaran-component', compact('lamarans'));
     }
+
+
 }

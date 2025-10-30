@@ -41,6 +41,8 @@ class AuthController extends Controller
                 return redirect('/')->with('success', 'Login berhasil!');
             case 'alumni':
                 return redirect('/jobfair')->with('success', 'Login berhasil!');
+            case "perusahaan":
+                return redirect('/dashboard/jobfair/lamaran')->with('success', 'Login berhasil!');
             default:
                 Auth::logout();
                 return back()->with('error', 'Role tidak dikenali.');

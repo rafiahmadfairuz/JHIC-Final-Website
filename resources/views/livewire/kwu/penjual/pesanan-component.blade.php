@@ -6,7 +6,7 @@
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-lg font-bold">Daftar Pesanan</h2>
                     </div>
-                    <div class="mb-4 flex items-center gap-3">
+                    {{-- <div class="mb-4 flex items-center gap-3">
                         <label for="status" class="font-medium text-gray-700 dark:text-gray-300">Filter Status</label>
                         <select name="status" id="status"
                             class="px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
@@ -17,7 +17,7 @@
                             </option>
                             <option value="batal" {{ request('status') == 'batal' ? 'selected' : '' }}>Batal</option>
                         </select>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="overflow-x-auto">

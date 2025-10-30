@@ -16,9 +16,9 @@ class Toko extends Model
 
     protected $fillable = ['nama_toko', 'deskripsi'];
 
-    public function users(): BelongsToMany
+    public function users()
     {
-        return $this->belongsToMany(User::class, 'toko_users');
+        return $this->belongsToMany(User::class, 'toko_users', 'toko_id', 'user_id');
     }
 
     public function produks(): HasMany

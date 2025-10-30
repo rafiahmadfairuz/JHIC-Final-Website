@@ -74,7 +74,7 @@ class User extends Authenticatable
 
     public function tokos()
     {
-        return $this->belongsToMany(Toko::class, 'toko_users');
+        return $this->belongsToMany(Toko::class, 'toko_users', 'user_id', 'toko_id');
     }
 
     public function orders()
@@ -95,5 +95,10 @@ class User extends Authenticatable
     public function kursuses()
     {
         return $this->hasMany(Kursus::class, 'guru_id');
+    }
+
+    public function perusahaan()
+    {
+        return $this->hasOne(Perusahaan::class, 'perusahaan_id');
     }
 }

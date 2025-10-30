@@ -331,32 +331,32 @@ class JobfairController extends Controller
 
         $raw = MelamarPekerjaan::where('id', $pekerjaanId)
             ->where('pelamar_id', $user->id)
-            ->value('berkas_yang_dibutuhkan');   
+            ->value('berkas_yang_dibutuhkan');
 
         $listBerkas = json_decode($raw, true) ?? [];
 
 
         $iduser = $user->id;
 
-        $topProducts = OrderItem::select(
-            'produk_id',
-            DB::raw('SUM(qty) as total_terjual')
-        )
+        $user = auth()->user();
+        
+        $topProducts = OrderItem::select('produk_id', DB::raw('SUM(qty) as total_terjual'))
             ->whereHas('order', function ($q) {
                 $q->where('status', 'selesai');
             })
             ->whereHas('produk.toko.users', function ($q) use ($user) {
                 $q->where('user_id', $user->id);
             })
+            ->with('produk')
             ->groupBy('produk_id')
             ->orderByDesc('total_terjual')
-            ->with('produk')
-            ->limit(4)
             ->get();
 
+        $chartLabels = $topProducts->map(fn($item) => $item->produk->nama ?? 'Unknown');
+        $chartData = $topProducts->map(fn($item) => $item->total_terjual);
 
 
-        // render view
+
         return view('jobfair.dashboard.detail-userJobfair', compact(
             'rapotCollection',
             'avgRapotSummary',
