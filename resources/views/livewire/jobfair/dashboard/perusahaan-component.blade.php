@@ -7,9 +7,9 @@
                     <input type="text" wire:model.debounce.500ms="search" placeholder="Cari perusahaan..."
                         class="px-3 py-2 border rounded text-sm focus:ring focus:ring-blue-300" />
 
-                    <button wire:click="create" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    {{-- <button wire:click="create" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                         <i class="fas fa-plus mr-2"></i> Add
-                    </button>
+                    </button> --}}
                 </div>
             </div>
 
@@ -37,10 +37,10 @@
                                 <td class="p-3">{{ $perusahaan->alamat }}</td>
                                 <td class="p-3">{{ $perusahaan->jenis_perusahaan }}</td>
                                 <td class="p-3 space-x-2">
-                                    <button wire:click="edit({{ $perusahaan->id }})"
+                                    {{-- <button wire:click="edit({{ $perusahaan->id }})"
                                         class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
                                         <i class="fas fa-edit"></i>
-                                    </button>
+                                    </button> --}}
                                     <button wire:click="confirmDelete({{ $perusahaan->id }})"
                                         onclick="openDeleteModal()"
                                         class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">
